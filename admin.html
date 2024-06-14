@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #007bff;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        section h2 {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            margin: 0px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .portfolio-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .portfolio-card img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .blog-card {
+            display: flex;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .blog-card img {
+            width: 200px;
+            height: auto;
+        }
+
+        .blog-content {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .blog-content h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #007bff;
+        }
+
+        .blog-content h2 {
+            margin: 5px 0;
+            font-size: 22px;
+        }
+
+        .blog-content p {
+            margin: 10px 0;
+        }
+
+        .blog-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .blog-actions .like,
+        .blog-actions .comment {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .blog-actions img {
+            width: 20px;
+            height: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table thead {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        table img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            table thead {
+                display: none;
+            }
+
+            table tr {
+                margin-bottom: 10px;
+            }
+
+            table td {
+                display: flex;
+                justify-content: space-between;
+                padding-left: 50%;
+                position: relative;
+            }
+
+            table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            .btn {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="#portfolio">Manage Portfolio</a></li>
+                <li><a href="#blogs">Manage Blogs</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section id="portfolio">
+            <h2>Portfolio Management</h2>
+
+            <!-- Add New Project Button -->
+            <a href="#" class="btn">Add New Project</a>
+
+            <!-- Projects Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project Title</th>
+                        <th>Description</th>
+                        <th>Duration</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Project Title">Voting management system</td>
+                        <td data-label="Description">A voting system is a secure platform for casting, managing, and tallying votes, ensuring accuracy and transparency in elections.</td>
+                        <td data-label="Duration">2 weeks</td>
+                        <td data-label="Image"><img src="image/voting-card.jpeg" alt="Voting management system"></td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Project Title">Super market website</td>
+                        <td data-label="Description">A supermarket website allows customers to browse, purchase groceries, and household items online, offering convenience and home delivery services.</td>
+                        <td data-label="Duration">4 weeks</td>
+                        <td data-label="Image"><img src="image/supper-market.jpeg" alt="Super market website"></td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Project Title">Harvest management system</td>
+                        <td data-label="Description">A harvest management system optimizes the planning, tracking, and reporting of crop yields, ensuring efficient and sustainable agricultural practices.</td>
+                        <td data-label="Duration">4 weeks</td>
+                        <td data-label="Image"><img src="image/Havest-mgt.jpeg" alt="Harvest management system"></td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Project Title">Event sits reservation system</td>
+                        <td data-label="Description">An event site reservation system enables users to book, manage, and organize event venues and seating arrangements efficiently and conveniently.</td>
+                        <td data-label="Duration">3 weeks</td>
+                        <td data-label="Image"><img src="image/sit-reservation.jpeg" alt="Event sits reservation system"></td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Project Title">Guards deployment solution</td>
+                        <td data-label="Description">A guards deployment solution streamlines the scheduling, tracking, and management of security personnel, ensuring optimal coverage and efficiency.</td>
+                        <td data-label="Duration">5 weeks</td>
+                        <td data-label="Image"><img src="image/security.jpeg" alt="Guards deployment solution"></td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Project Title">E-commerce</td>
+                        <td data-label="Description">An e-commerce platform enables businesses to sell products and services online, providing customers with a seamless shopping experience.</td>
+                        <td data-label="Duration">5 weeks</td>
+                        <td data-label="Image"><img src="image/e-commerce.jpeg" alt="E-commerce"></td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <!-- Add more project rows as needed -->
+                </tbody>
+            </table>
+
+        </section>
+
+        <section id="blogs">
+            <h2>Blog Management</h2>
+
+            <!-- Add New Blog Button -->
+            <a href="#" class="btn">Add New Blog</a>
+
+            <!-- Blogs Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Subtitle</th>
+                        <th>Content</th>
+                        <th>Image</th>
+                        <th>Likes</th>
+                        <th>Comments</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Title">Top 10 JavaScript Frameworks</td>
+                        <td data-label="Subtitle">JavaScript</td>
+                        <td data-label="Content">Discover the most popular JavaScript frameworks and their features.</td>
+                        <td data-label="Image"><img src="image/js-frameworks.jpg" alt="JavaScript Frameworks"></td>
+                        <td data-label="Likes">15</td>
+                        <td data-label="Comments">3</td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Title">Simple Commands That Will Make You Feel Like a Pro</td>
+                        <td data-label="Subtitle">Linux</td>
+                        <td data-label="Content">If you know basic commands to enter in terminal, you will be more comfortable.</td>
+                        <td data-label="Image"><img src="image/Linux.jpg" alt="Linux"></td>
+                        <td data-label="Likes">20</td>
+                        <td data-label="Comments">5</td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Title">JavaScript Tips To Improve Your Webpage Performance</td>
+                        <td data-label="Subtitle">JavaScript</td>
+                        <td data-label="Content">It will help if you have these tips to improve your workflow, reduce the number of bugs.</td>
+                        <td data-label="Image"><img src="image/scriptJava.png" alt="JavaScript Tips"></td>
+                        <td data-label="Likes">20</td>
+                        <td data-label="Comments">5</td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Title">Don’t Miss The Opportunity that Web 3.2 Gives You</td>
+                        <td data-label="Subtitle">Web 3.2</td>
+                        <td data-label="Content">What is Web 3.2 and why you should pay attention to it, also the future of blockchain.</td>
+                        <td data-label="Image"><img src="image/dna-wall-pic-5-web.jpg" alt="Web 3.2"></td>
+                        <td data-label="Likes">20</td>
+                        <td data-label="Comments">5</td>
+                        <td data-label="Actions">
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn">Edit</a>
+                            <a href="#" class="btn">Remove</a>
+                        </td>
+                    </tr>
+                    <!-- Add more blog rows as needed -->
+                </tbody>
+            </table>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
