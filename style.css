@@ -267,7 +267,7 @@ section {
     text-align: center;
     border-radius: 10px;
     overflow: hidden;
-    color: #333;
+    color: #ffffff;
     /* Text color for better readability */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -289,12 +289,12 @@ section {
 
 .portfolio-card h4 {
     margin: 10px 0;
-    color: #222;
+    color: #ffffff;
     /* Darker heading color */
 }
 
 .portfolio-card p {
-    color: #555;
+    color: #ffffff;
     /* Grey text for better readability */
     padding: 0 20px;
 }
