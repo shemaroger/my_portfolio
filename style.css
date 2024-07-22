@@ -117,10 +117,10 @@ nav ul li a:hover {
     
 }
 main {
-    padding: 20px;
+    padding: 45px;
 }
-.home{
-  margin-top: 170px;
+/* .home{
+  margin-top: 190px;
 }
 .card {
     background: linear-gradient(to right, #f7c4c4, #d70f0f);
@@ -204,8 +204,73 @@ main {
 .image {
     margin-top: -110px;
     margin-right: 300px;
+} */
+/* General styling */
+.home {
+    background-color: #f8f9fa;
+    /* Adjust background color if needed */
+    padding: 50px 0;
 }
 
+.soft h4 {
+    font-size: 1.5rem;
+    /* Adjust as needed */
+}
+
+.container-text {
+    margin-bottom: 30px;
+}
+
+.f-text p {
+    font-size: 1.2rem;
+    /* Adjust as needed */
+}
+
+.l-text h1 {
+    font-size: 2.5rem;
+    /* Adjust as needed */
+}
+
+.card {
+    background-color: #fff;
+    /* Card background color */
+    border: none;
+    /* Remove border if not needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Optional shadow */
+}
+
+.image img {
+    max-width: 100%;
+    /* Ensure image is responsive */
+    height: auto;
+}
+
+.join-text button {
+    background-color: #007bff;
+    /* Adjust button color */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+.join-text button a {
+    color: #fff;
+    /* Ensure text color is white */
+    text-decoration: none;
+}
+
+@media (max-width: 767.98px) {
+    .l-text h1 {
+        font-size: 1.8rem;
+        /* Adjust font size for smaller screens */
+    }
+
+    .f-text p {
+        font-size: 1rem;
+        /* Adjust font size for smaller screens */
+    }
+}
 section {
     margin-bottom: 20px;
 }
@@ -643,11 +708,11 @@ footer {
 }
 
 @media (max-width: 480px) {
-    .blog-content h2 {
+    .blog-content h3 {
         font-size: 1.2rem;
     }
 
-    .blog-content h3 {
+    .blog-content h4 {
         font-size: 1rem;
     }
 
@@ -801,9 +866,9 @@ button[type="submit"]:hover {
     }
 
    
-    footer {
+    /* footer {
         position: relative;
-    }
+    } */
 }
 
 @media (max-width: 480px) {
