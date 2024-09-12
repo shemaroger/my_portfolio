@@ -49,7 +49,7 @@
       const password = document.getElementById('password').value;
 
       try {
-        const response = await fetch('https://my-blogs-hfeb.onrender.com/userLogin', {
+        const response = await fetch('https://my-blogs-hfeb.onrender.com/api/userLogin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -59,9 +59,8 @@
 
         if (response.status === 200) {
           const data = await response.json();
-          loginMessage.textContent = 'Login successful!';
-          loginMessage.className = 'text-success';
-          console.log('Token:', data.token);
+          localStorage.setItem('token', data.token);
+          window.location.href = 'blogList.html';  // Redirect to the blog management page
         } else {
           const errorData = await response.json();
           loginMessage.textContent = errorData.error;
