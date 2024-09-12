@@ -367,31 +367,32 @@ function uploadImage(token) {
     fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/image`, {
         method: 'POST',
         headers: {
-            'Authorization': token
+            'Authorization': `Bearer ${token}`
             // Content-Type is automatically set by FormData
         },
         body: formData
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(error => {
-                throw new Error(error.message || 'Failed to upload image');
-            });
+    .then(response => response.text()) // Read the response as text
+    .then(text => {
+        try {
+            const jsonResponse = JSON.parse(text); // Parse JSON if possible
+            if (!response.ok) {
+                throw new Error(jsonResponse.error || 'Failed to upload image');
+            }
+            showAlert('Image uploaded successfully!');
+            fetchBlogs(token); // Reload blogs to reflect changes
+            var uploadImageModal = new bootstrap.Modal(document.getElementById('uploadImageModal'));
+            uploadImageModal.hide();
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            showAlert(`Failed to upload image. Details: ${error.message}`, 'danger');
         }
-        return response.json();
-    })
-    .then(blog => {
-        showAlert('Image uploaded successfully!');
-        fetchBlogs(token);
-        var uploadImageModal = new bootstrap.Modal(document.getElementById('uploadImageModal'));
-        uploadImageModal.hide();
     })
     .catch(error => {
         console.error('Error uploading image:', error);
-        showAlert('Failed to upload image. Please try again later.', 'danger');
+        showAlert(`Failed to upload image. Details: ${error.message}`, 'danger');
     });
 }
-
 
 </script>
 
