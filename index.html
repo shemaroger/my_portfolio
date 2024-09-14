@@ -7,6 +7,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <header>
@@ -149,91 +150,160 @@
 
         <section class="blogs" id="blogs">
             <h1>BLOGS</h1>
-            <h4>TOP ARTICLES &nbsp;&nbsp;&nbsp;&nbsp; RECENTLY PUBLISHED</h4>
-            <div class="blog-card">
-                <img src="image/Fullstack-Dev-new.png" alt="Blog Image">
-                <div class="blog-content">
-                    <h3>Vscode</h3>
-                    <h2>9 Vscode Extension you Definitetly<br>
-                     As Developer </h2>
-                    <p>It will help if  you have these extensions to improve your <br>work low, reduce the number of bugs.
-                    <a href="#read-more" class="read-more">Read More</a></p>
-                    <div class="blog-actions">
-                        <div class="like">
-                            <img src="icons/icons8-like.gif" alt="Project 6">&nbsp;
-                            <span>20</span>
+<div id="blogContainer"></div>
+
+    <script>
+    let token = 'your_token_here'; // Replace with your actual token
+
+    // Fetch Blogs
+    function fetchBlogs() {
+        fetch('https://my-blogs-hfeb.onrender.com/api/blogs', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch blogs');
+            }
+            return response.json();
+        })
+        .then(blogs => {
+            const blogContainer = document.getElementById('blogContainer');
+            blogContainer.innerHTML = '';
+
+            blogs.forEach(blog => {
+                const card = document.createElement('div');
+                card.className = 'blog-card';
+                card.dataset.id = blog._id;
+                
+                card.innerHTML = `
+                    <img src="${blog.image || '/api/placeholder/420/300'}" alt="Blog post image" class="blog-card-image">
+                    <div class="blog-content">
+                        <h2 class="blog-card-title">${blog.title}</h2>
+                        <p class="blog-card-excerpt">${blog.content.substring(0, 150)}...</p>
+                        <h3 class="blog-card-date">${new Date(blog.date).toLocaleDateString()}</h3>
+                        <div class="blog-actions">
+                            <span class="like" onclick="toggleLike('${blog._id}', this)">❤ Like (<span class="like-count">${blog.likes || 0}</span>)</span>
+                            <span class="comment" onclick="toggleComments('${blog._id}')">💬 Comments (<span class="comment-count">0</span>)</span>
                         </div>
-                        <div class="comment">
-                            <img src="icons/icons8-comment.png" alt="Project 6">&nbsp;
-                            <span>5</span>&nbsp;&nbsp;&nbsp;&nbsp;Nov .8
-                        </div>
-                    </div>
-                </div>
-            </div>
-               <div class="blog-card">
-                <img src="image/Linux.jpg" alt="Blog Image">
-                <div class="blog-content">
-                    <h3>Linux</h3>
-                    <h2>Simple Commands in That  Will Make<br> You Fell Like Pro </h2>
-                    <p>If you know basic commands to enter in terminal,<br>
-                      you will be more comfortable <a href="linuxBlogs.html" class="read-more">Read More</a></p>
-                    <div class="blog-actions">
-                        <div class="like">
-                      
-                            <img src="icons/icons8-like.gif" alt="Project 6">&nbsp;
-                            <span>20</span>
-                        </div>
-                        <div class="comment">
-                        
-                            <img src="icons/icons8-comment.png" alt="Project 6">&nbsp;
-                            <span>5</span>&nbsp;&nbsp;&nbsp;&nbsp;Nov .12
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="blog-card">
-                <img src="image/scriptJava.png" alt="Blog Image">
-                <div class="blog-content">
-                    <h3>JavaScript</h3>
-                    <h2>JavaScripts Tips To Improve your <br>webpage performance  </h2>
-                    <p>It will help if  you have these extensions to improve your <br>work low, reduce the number of bugs.
-                    <a href="#read-more" class="read-more">Read More</a></p>
-                    
-                    <div class="blog-actions">
-                        <div class="like">
-                      
-                            <img src="icons/icons8-like.gif" alt="Project 6">&nbsp;
-                            <span>20</span>
-                        </div>
-                        <div class="comment">
-                        
-                            <img src="icons/icons8-comment.png" alt="Project 6">&nbsp;
-                            <span>5</span>&nbsp;&nbsp;&nbsp;&nbsp;Nov .18
+                        <div class="comment-section" style="display: none;">
+                            <form class="comment-form" onsubmit="addComment(event, '${blog._id}')">
+                                <textarea name="comment" placeholder="Add a comment" required></textarea>
+                                <button type="submit">Post Comment</button>
+                            </form>
+                            <ul class="comment-list"></ul>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="blog-card">
-                <img src="image/dna-wall-pic-5-web.jpg" alt="Blog Image">
-                <div class="blog-content">
-                    <h3>Web 3.2</h3>
-                    <h2>Don’t miss The Opportunity that<br>web 3.2 gives you</h2>
-                    <p>What is web 3.2 and why you should pay attention <br>
-                    to do it also, the future of blockchain.
-                    <a href="#read-more" class="read-more">Read More</a></p>
-                    
-                    <div class="blog-actions">
-                        <div class="like">
-                            <img src="icons/icons8-like.gif" alt="Project 6">&nbsp;
-                            <span>20</span>
-                        </div>
-                        <div class="comment">
-                            <img src="icons/icons8-comment.png" alt="Project 6">&nbsp;
-                            <span>5</span>&nbsp;&nbsp;&nbsp;&nbsp;Nov .20
-                        </div>
-                    </div>
-                </div>
-            </div>
+                `;
+                
+                blogContainer.appendChild(card);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Toggle Comments Visibility and Fetch on Demand
+    function toggleComments(blogId) {
+        const commentSection = document.querySelector(`[data-id="${blogId}"] .comment-section`);
+        const isHidden = commentSection.style.display === 'none';
+        
+        if (isHidden) {
+            fetchComments(blogId);
+        }
+        
+        commentSection.style.display = isHidden ? 'block' : 'none';
+    }
+
+    // Fetch Comments for a Blog
+    function fetchComments(blogId) {
+        fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/comments`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(response => response.json())
+        .then(comments => {
+            const commentList = document.querySelector(`[data-id="${blogId}"] .comment-list`);
+            const commentCount = document.querySelector(`[data-id="${blogId}"] .comment-count`);
+            commentCount.textContent = comments.length;
+            
+            commentList.innerHTML = comments.map(comment => `
+                <li class="comment-item">
+                    <p>${comment.comment}</p>
+                    <span class="comment-like" onclick="toggleLikeComment('${comment._id}', this)">
+                        ❤ <span class="comment-like-count">${comment.like}</span>
+                    </span>
+                </li>
+            `).join('');
+        })
+        .catch(error => console.error('Error fetching comments:', error));
+    }
+
+    // Add a Comment to a Blog
+    function addComment(event, blogId) {
+        event.preventDefault();
+        const form = event.target;
+        const comment = form.comment.value;
+
+        fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ comment })
+        })
+        .then(response => response.json())
+        .then(() => {
+            form.reset();
+            fetchComments(blogId);
+        })
+        .catch(error => console.error('Error adding comment:', error));
+    }
+
+    // Toggle Like for Blog
+    function toggleLike(blogId, element) {
+        const likeCountElement = element.querySelector('.like-count');
+        const currentLikes = parseInt(likeCountElement.textContent);
+
+        fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/like`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ like: currentLikes + 1 })
+        })
+        .then(response => response.json())
+        .then(updatedBlog => {
+            likeCountElement.textContent = updatedBlog.likes;
+        })
+        .catch(error => console.error('Error updating like:', error));
+    }
+
+    // Toggle Like for a Comment
+    function toggleLikeComment(commentId, element) {
+        const likeCountElement = element.querySelector('.comment-like-count');
+        const currentLikes = parseInt(likeCountElement.textContent);
+
+        fetch(`https://my-blogs-hfeb.onrender.com/api/comments/${commentId}/like`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ like: currentLikes + 1 })
+        })
+        .then(response => response.json())
+        .then(updatedComment => {
+            likeCountElement.textContent = updatedComment.like;
+        })
+        .catch(error => console.error('Error updating like:', error));
+    }
+
+    // Fetch Blogs when the page loads
+    document.addEventListener('DOMContentLoaded', fetchBlogs);
+</script>
+
         </section>
        <section id="contact">
        <div class="contact-header">
@@ -315,7 +385,6 @@
         adjustFooter();
     });
 </script>
-
 
 </body>
 </html>

@@ -4,133 +4,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Management</title>
-    <!-- Bootstrap CSS for styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Advanced Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            height: 100vh;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 20px;
+        }
+
+        .sidebar .nav-link {
+            color: #fff;
+            padding: 10px 20px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #495057;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #007bff;
+        }
+
+        .main-content {
             padding: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #e3e6f0;
+            font-weight: bold;
+        }
+
+        .table img {
+            max-width: 50px;
+            height: auto;
+            border-radius: 5px;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="text-center">Blog Management</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="admin.html">
+                                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                            </a>
+                        </li>
+                       
+                        <li class="nav-item">
+                            <a class="nav-link" href="blogList.html">
+                                <i class="fas fa-blog me-2"></i> Blogs
+                            </a>
+                        </li>
+                       
+                        <li class="nav-item mt-3">
+    <a id="logoutButton" href="#" class="nav-link text-secondary">
+        <i class="fa fa-sign-out-alt"></i> Logout
+    </a>
+</li>
 
-        <!-- Success Alert -->
-        <div id="alertPlaceholder"></div>
-
-        <!-- Button to open add blog modal -->
-        <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#addBlogModal">
-            Add New Blog
-        </button>
-
-        <!-- Blog table -->
-        <table class="table table-striped" id="blogTable">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Content</th>
-                    <th>Author</th>
-                    <th>Image</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Blog rows will be inserted here by JavaScript -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Add Blog Modal -->
-    <div class="modal fade" id="addBlogModal" tabindex="-1" aria-labelledby="addBlogModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addBlogModalLabel">Add New Blog</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </ul>
                 </div>
-                <div class="modal-body">
-                    <form id="addBlogForm">
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="content" class="form-label">Content</label>
-                            <textarea class="form-control" id="content" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="author" class="form-label">Author</label>
-                            <input type="text" class="form-control" id="author" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Create Blog</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+            </nav>
 
-    <!-- Edit Blog Modal -->
-    <div class="modal fade" id="editBlogModal" tabindex="-1" aria-labelledby="editBlogModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editBlogModalLabel">Edit Blog</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editBlogForm">
-                        <input type="hidden" id="editBlogId">
-                        <div class="mb-3">
-                            <label for="editTitle" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="editTitle" required>
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
                         </div>
-                        <div class="mb-3">
-                            <label for="editContent" class="form-label">Content</label>
-                            <textarea class="form-control" id="editContent" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editAuthor" class="form-label">Author</label>
-                            <input type="text" class="form-control" id="editAuthor" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Update Blog</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Upload Image Modal -->
-<div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="uploadImageForm">
-                    <input type="hidden" id="uploadBlogId">
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Select Image</label>
-                        <input type="file" class="form-control" id="image" required accept="image/*">
                     </div>
-                    <button type="submit" class="btn btn-primary">Upload Image</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+                </div>
 
+                <div class="container">
+                    <h1 class="text-center">Blog Management</h1>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                    <!-- Success Alert -->
+                    <div id="alertPlaceholder"></div>
 
-    <script>
+                    <!-- Button to open add blog modal -->
+                    <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#addBlogModal">
+                        Add New Blog
+                    </button>
+
+                    <!-- Blog Table -->
+                    <table class="table table-striped" id="blogTable">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Author</th>
+                                <th>Image</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Blog rows will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Add Blog Modal -->
+                <div class="modal fade" id="addBlogModal" tabindex="-1" aria-labelledby="addBlogModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addBlogModalLabel">Add New Blog</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addBlogForm">
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="content" class="form-label">Content</label>
+                                        <textarea class="form-control" id="content" rows="3" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="author" class="form-label">Author</label>
+                                        <input type="text" class="form-control" id="author" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Create Blog</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Blog Modal -->
+                <div class="modal fade" id="editBlogModal" tabindex="-1" aria-labelledby="editBlogModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editBlogModalLabel">Edit Blog</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editBlogForm">
+                                    <input type="hidden" id="editBlogId">
+                                    <div class="mb-3">
+                                        <label for="editTitle" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="editTitle" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editContent" class="form-label">Content</label>
+                                        <textarea class="form-control" id="editContent" rows="3" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editAuthor" class="form-label">Author</label>
+                                        <input type="text" class="form-control" id="editAuthor" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Update Blog</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Image Modal -->
+                <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="uploadImageForm">
+                                    <input type="hidden" id="uploadBlogId">
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Select Image</label>
+                                        <input type="file" class="form-control" id="image" required accept="image/*">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Upload Image</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bootstrap JS and dependencies -->
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+                <script>
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      localStorage.removeItem('token');  // Remove the token from localStorage
+      window.location.href = 'login.html';  // Redirect to the login page
+    });
+  </script>
+
+                 <script>
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -344,14 +437,15 @@ function uploadImage(token) {
     fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/image`, {
         method: 'POST',
         headers: {
-            'Authorization': token
+            'Authorization': `Bearer ${token}`
         },
         body: formData
     })
     .then(response => {
         if (!response.ok) {
             return response.text().then(text => {
-                throw new Error(text);
+                console.error('Server response error:', text);
+                throw new Error(text || 'Failed to upload image.');
             });
         }
         return response.json();
@@ -359,7 +453,12 @@ function uploadImage(token) {
     .then(data => {
         showAlert('Image uploaded successfully');
         fetchBlogs(token); // Refresh the blog list to show the updated image
-        document.getElementById('uploadImageModal').querySelector('button.btn-close').click(); // Close the modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('uploadImageModal'));
+        if (modal) {
+            modal.hide(); // Close the modal using Bootstrap's method
+        } else {
+            console.warn('Modal instance not found');
+        }
     })
     .catch(error => {
         console.error('Error uploading image:', error);
@@ -370,14 +469,21 @@ function uploadImage(token) {
 
 function handleUploadImage(e) {
     const row = e.target.closest('tr');
+    if (!row) return; // Ensure `row` is found
+
     const blogId = row.dataset.id;
+    if (!blogId) return; // Ensure `blogId` is present
+
     document.getElementById('uploadBlogId').value = blogId;
 
-    new bootstrap.Modal(document.getElementById('uploadImageModal')).show();
+    const modal = new bootstrap.Modal(document.getElementById('uploadImageModal'));
+    modal.show();
 }
 
-
     </script>
+            </main>
+        </div>
+    </div>
 </body>
 
 </html>

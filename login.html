@@ -60,7 +60,7 @@
         if (response.status === 200) {
           const data = await response.json();
           localStorage.setItem('token', data.token);
-          window.location.href = 'blogList.html';  // Redirect to the blog management page
+          window.location.href = 'admin.html';  // Redirect to the blog management page
         } else {
           const errorData = await response.json();
           loginMessage.textContent = errorData.error;
