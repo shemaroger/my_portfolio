@@ -341,23 +341,23 @@ async function addComment(event, blogId) {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ content }), // Ensure the body is formatted correctly
+            body: JSON.stringify({ content }),
         });
 
         if (!response.ok) {
-            // Log the response for debugging
             const errorResponse = await response.json();
-            console.error('Error response:', errorResponse);  // Log the full error
+            console.error('Error response:', errorResponse);
             throw new Error(`Failed to add comment: ${response.status} - ${errorResponse.message}`);
         }
 
-        form.reset();
-        fetchComments(blogId);  // Refresh the comments after successfully posting
+        form.reset(); // Clear the form on successful submission
+        fetchComments(blogId); // Reload the comments section
     } catch (error) {
         console.error('Error adding comment:', error);
-        alert(`Failed to post comment. Please try again. Error: ${error.message}`);
+        alert('Failed to post comment. Please try again.');
     }
 }
+
 
 
 // Initialize blog fetching on page load
