@@ -153,197 +153,217 @@
 <div id="blogContainer"></div>
 
    <script>
-    // Retrieve token from localStorage
-    const token = localStorage.getItem('token');
+// Retrieve token from localStorage
+const token = localStorage.getItem('token');
 
-    // Fetch Blogs
-    async function fetchBlogs() {
-        try {
-            const response = await fetch('https://my-blogs-hfeb.onrender.com/api/blogs');
+// Fetch All Blogs
+async function fetchBlogs() {
+    try {
+        const response = await fetch('https://my-blogs-hfeb.onrender.com/api/blogs');
+        if (!response.ok) throw new Error('Failed to fetch blogs');
+        
+        const blogs = await response.json();
+        const blogContainer = document.getElementById('blogContainer');
+        blogContainer.innerHTML = '';
 
-            if (!response.ok) throw new Error('Failed to fetch blogs');
+        blogs.forEach(blog => {
+            const card = document.createElement('div');
+            card.className = 'blog-card';
+            card.dataset.id = blog._id;
 
-            const blogs = await response.json();
-            const blogContainer = document.getElementById('blogContainer');
-            blogContainer.innerHTML = '';
+            // Visitors can see all blogs, but only logged-in users can like and comment
+            const likeAction = token ? `<span class="like" onclick="toggleLike('${blog._id}', this)">❤ Like (<span class="like-count">${blog.likes.length || 0}</span>)</span>` : '';
+            const commentAction = `<span class="comment" onclick="toggleComments('${blog._id}')">💬 Comments (<span class="comment-count">${blog.comments.length || 0}</span>)</span>`;
+            const commentSection = token ? `
+                <div class="comment-section" style="display: none;">
+                    <form class="comment-form" onsubmit="addComment(event, '${blog._id}')">
+                        <textarea name="content" placeholder="Add a comment" required></textarea>
+                        <button type="submit">Post Comment</button>
+                    </form>
+                    <ul class="comment-list"></ul>
+                </div>
+            ` : '';
 
-            blogs.forEach(blog => {
-                const card = document.createElement('div');
-                card.className = 'blog-card';
-                card.dataset.id = blog._id;
+            card.innerHTML = `
+                <img src="${blog.image || '/api/placeholder/420/300'}" alt="Blog post image" class="blog-card-image">
+                <div class="blog-content">
+                    <h2 class="blog-card-title" onclick="viewSingleBlog('${blog._id}')">${blog.title}</h2>
+                    <p class="blog-card-excerpt">${blog.content.substring(0, 150)}...</p>
+                    <h3 class="blog-card-date">${new Date(blog.date).toLocaleDateString()}</h3>
+                    <div class="blog-actions">
+                        ${likeAction}
+                        ${commentAction}
+                    </div>
+                    ${commentSection}
+                </div>
+            `;
+            blogContainer.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
-                // Check if user is logged in (token exists)
-                const likeAction = token ? `<span class="like" onclick="toggleLike('${blog._id}', this)">❤ Like (<span class="like-count">${blog.likes.length || 0}</span>)</span>` : '';
-                const commentAction = `
+// View a single blog (accessible to both visitors and logged-in users)
+async function viewSingleBlog(blogId) {
+    try {
+        const response = await fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}`);
+        if (!response.ok) throw new Error('Failed to fetch blog');
+
+        const blog = await response.json();
+        const blogContainer = document.getElementById('blogContainer');
+        blogContainer.innerHTML = `
+            <div class="single-blog">
+                <img src="${blog.image || '/api/placeholder/420/300'}" alt="Blog post image" class="blog-card-image">
+                <div class="blog-content">
+                    <h2 class="blog-card-title">${blog.title}</h2>
+                    <p class="blog-card-full-content">${blog.content}</p>
+                    <h3 class="blog-card-date">${new Date(blog.date).toLocaleDateString()}</h3>
+                </div>
+                ${token ? `
+                <div class="blog-actions">
+                    <span class="like" onclick="toggleLike('${blog._id}', this)">❤ Like (<span class="like-count">${blog.likes.length || 0}</span>)</span>
                     <span class="comment" onclick="toggleComments('${blog._id}')">💬 Comments (<span class="comment-count">${blog.comments.length || 0}</span>)</span>
-                `;
-                const commentSection = token ? `
-                    <div class="comment-section" style="display: none;">
-                        <form class="comment-form" onsubmit="addComment(event, '${blog._id}')">
-                            <textarea name="content" placeholder="Add a comment" required></textarea>
-                            <button type="submit">Post Comment</button>
-                        </form>
-                        <ul class="comment-list"></ul>
-                    </div>
-                ` : '';
+                </div>
+                <div class="comment-section" style="display: none;">
+                    <form class="comment-form" onsubmit="addComment(event, '${blog._id}')">
+                        <textarea name="content" placeholder="Add a comment" required></textarea>
+                        <button type="submit">Post Comment</button>
+                    </form>
+                    <ul class="comment-list"></ul>
+                </div>` : ''}
+            </div>
+        `;
+    } catch (error) {
+        console.error('Error fetching blog:', error);
+    }
+}
 
-                card.innerHTML = `
-                    <img src="${blog.image || '/api/placeholder/420/300'}" alt="Blog post image" class="blog-card-image">
-                    <div class="blog-content">
-                        <h2 class="blog-card-title">${blog.title}</h2>
-                        <p class="blog-card-excerpt">${blog.content.substring(0, 150)}...</p>
-                        <h3 class="blog-card-date">${new Date(blog.date).toLocaleDateString()}</h3>
-                        <div class="blog-actions">
-                            ${likeAction}
-                            ${commentAction}
-                        </div>
-                        ${commentSection}
-                    </div>
-                `;
-                
-                blogContainer.appendChild(card);
-            });
-        } catch (error) {
-            console.error('Error:', error);
-        }
+// Toggle comments visibility and fetch comments (Logged-in users only)
+function toggleComments(blogId) {
+    if (!token) {
+        alert('You must be logged in to view or add comments.');
+        window.location.href = 'login.html'; // Redirect to login page
+        return;
     }
 
-    // Toggle Comments Visibility and Fetch on Demand
-    function toggleComments(blogId) {
-        // Check if user is logged in
-        if (!token) {
-            alert('You must be logged in to view or add comments.');
-            window.location.href = 'login.html'; // Redirect to login page
-            return;
-        }
+    const commentSection = document.querySelector(`[data-id="${blogId}"] .comment-section`);
+    const isHidden = commentSection.style.display === 'none';
+    
+    if (isHidden) {
+        fetchComments(blogId);
+    }
+    
+    commentSection.style.display = isHidden ? 'block' : 'none';
+}
 
-        const commentSection = document.querySelector(`[data-id="${blogId}"] .comment-section`);
-        const isHidden = commentSection.style.display === 'none';
-        
-        if (isHidden) {
-            fetchComments(blogId);
-        }
-        
-        commentSection.style.display = isHidden ? 'block' : 'none';
+// Fetch comments for a blog
+async function fetchComments(blogId) {
+    try {
+        const response = await fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/comments`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error('Failed to fetch comments');
+
+        const comments = await response.json();
+        const commentList = document.querySelector(`[data-id="${blogId}"] .comment-list`);
+        const commentCount = document.querySelector(`[data-id="${blogId}"] .comment-count`);
+        commentCount.textContent = comments.length;
+
+        commentList.innerHTML = comments.map(comment => `
+            <li class="comment-item">
+                <p>${comment.content}</p>
+            </li>
+        `).join('');
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+    }
+}
+
+// Like/Unlike a Blog
+async function toggleLike(blogId, likeElement) {
+    if (!token) {
+        alert('You must be logged in to like/unlike the blog');
+        window.location.href = 'login.html'; // Redirect to login page
+        return;
     }
 
-    // Fetch Comments for a Blog
-    async function fetchComments(blogId) {
-        try {
-            const response = await fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/comments`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+    console.log(`Authorization header: Bearer ${token}`);
 
-            if (!response.ok) throw new Error('Failed to fetch comments');
+    try {
+        const response = await fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/like`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
 
-            const comments = await response.json();
-            const commentList = document.querySelector(`[data-id="${blogId}"] .comment-list`);
-            const commentCount = document.querySelector(`[data-id="${blogId}"] .comment-count`);
-            commentCount.textContent = comments.length;
+        if (!response.ok) throw new Error('Failed to like/unlike blog');
 
-            commentList.innerHTML = comments.map(comment => `
-                <li class="comment-item">
-                    <p>${comment.content}</p>
-                </li>
-            `).join('');
-        } catch (error) {
-            console.error('Error fetching comments:', error);
+        const result = await response.json();
+        console.log('Like response:', result);
+
+        const likeCountElement = likeElement.querySelector('.like-count');
+        likeCountElement.textContent = result.likes;
+
+        if (result.message === 'Blog liked') {
+            likeElement.classList.add('liked');
+        } else {
+            likeElement.classList.remove('liked');
         }
+    } catch (error) {
+        console.error('Error liking/unliking blog:', error);
+        alert('Failed to like/unlike blog. Please try again later.');
     }
+}
 
-    // Add a Comment to a Blog
 async function addComment(event, blogId) {
     event.preventDefault();
     const form = event.target;
-    const content = form.content.value.trim(); // Trim whitespace from the comment
+    const content = form.content.value.trim();
 
-    // Check if user is logged in
     if (!token) {
         alert('You must be logged in to comment');
         window.location.href = 'login.html'; // Redirect to login page if not logged in
         return;
     }
 
-    // Check if the comment is empty
     if (content === '') {
         alert('Comment cannot be empty');
         return;
     }
 
-    console.log("Posting comment:", content);
-
     try {
         const response = await fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/comments`, {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Use Bearer token for authentication
             },
-            body: JSON.stringify({ content }) // Sending comment content in the request body
+            body: JSON.stringify({ content }), // Ensure the body is formatted correctly
         });
 
-        console.log("Response status:", response.status);
-
-        // Handle non-OK responses
-        if (response.status === 401) {
-            alert('You are not authorized. Please log in again.');
-            window.location.href = 'login.html'; // Redirect to login if unauthorized
-            return;
-        } else if (response.status === 404) {
-            alert('Blog post not found.');
-            return;
-        } else if (!response.ok) {
+        if (!response.ok) {
+            // Log the response for debugging
             const errorResponse = await response.json();
-            console.error("Error response:", errorResponse);
-            throw new Error('Failed to add comment');
+            console.error('Error response:', errorResponse);  // Log the full error
+            throw new Error(`Failed to add comment: ${response.status} - ${errorResponse.message}`);
         }
 
-        // If comment is successfully posted, clear the form and refresh comments
         form.reset();
-        fetchComments(blogId); // Refresh comments after successful post
+        fetchComments(blogId);  // Refresh the comments after successfully posting
     } catch (error) {
         console.error('Error adding comment:', error);
-        alert('Failed to post comment. Please try again.');
+        alert(`Failed to post comment. Please try again. Error: ${error.message}`);
     }
 }
 
 
-    // Like/Unlike a Blog
-    async function toggleLike(blogId, likeElement) {
-        if (!token) {
-            alert('You must be logged in to like/unlike the blog');
-            window.location.href = 'login.html'; // Redirect to login page
-            return;
-        }
-
-        try {
-            const response = await fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!response.ok) throw new Error('Failed to like/unlike blog');
-
-            const result = await response.json();
-            const likeCountElement = likeElement.querySelector('.like-count');
-            likeCountElement.textContent = result.likes;
-
-            if (result.message === 'Blog liked') {
-                likeElement.classList.add('liked');
-            } else {
-                likeElement.classList.remove('liked');
-            }
-        } catch (error) {
-            console.error('Error liking/unliking blog:', error);
-            alert('Failed to like/unlike blog. Please try again later.');
-        }
-    }
-
-    // Initialize blog fetching on page load
-    document.addEventListener('DOMContentLoaded', fetchBlogs);
+// Initialize blog fetching on page load
+document.addEventListener('DOMContentLoaded', fetchBlogs);
 </script>
+
 
 
 
