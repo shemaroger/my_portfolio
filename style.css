@@ -590,69 +590,95 @@ footer {
         height: auto;
     }
 }
- .blog-card {
-     display: flex;
-     flex-direction: row;
-     background-color: #ffe8e8;
-     border: 1px solid #ddd;
-     border-radius: 10px;
-     overflow: hidden;
-     margin-bottom: 20px;
-     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-     transition: transform 0.3s ease;
-     max-width: 600px;
-     /* You can adjust the width as per your need */
-     padding-right: 400px;
+ /* Define Variables for Colors */
+ :root {
+     --primary-color: #1da1f2;
+     --secondary-color: #14171a;
+     --accent-color: #657786;
+     --bg-color: #f5f8fa;
+     --light-bg: #ffffff;
+     --border-color: #e1e8ed;
+     --hover-color: #0d95e8;
+     --text-color: #333;
  }
+
+ /* Blog Section */
+ .blogs {
+     padding: 40px 0;
+     background-color: var(--bg-color);
+     text-align: center;
+ }
+
+ .blogs h1 {
+     font-size: 2.5rem;
+     color: var(--secondary-color);
+     margin-bottom: 30px;
+ }
+
+ /* Blog Card Styles */
+.blog-card {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 900px;
+    max-height: 300px;
+    margin: 0 auto;
+    overflow: hidden;
+    /* Ensure no content spills out */
+}
 
  .blog-card:hover {
      transform: translateY(-5px);
+     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
  }
 
- /* Image Styles */
- .blog-card img {
-     width: 100%;
-     height: 300px;
-     object-fit: cover;
-     border-radius: 10px 0 0 10px;
- }
+/* Image Styles */
+.blog-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px 0 0 10px;
+    object-fit: contain;
+    /* Ensures the full image is shown, with possible empty space */
+}
 
- .blog-card-image {
-     height: 200px;
-     object-fit: cover;
- }
+/* Updated Image Styles */
+.blog-card-image {
+    flex: 1;
+    max-width: 50%;
+    object-fit: cover; /* Cover the area while maintaining aspect ratio */
+    height: 100%;
+}
 
  /* Content Section */
- .blog-card-content,
- .blog-content {
-     padding: 16px;
+ .blog-card-content {
+     padding: 20px;
      flex: 1;
-     
+     display: flex;
+     flex-direction: column;
  }
 
- .blog-card-title,
- .blog-content h2 {
+ .blog-card-title {
      margin: 0;
-     font-size: 2rem;
+     font-size: 1.8rem;
      font-weight: bold;
-     background: linear-gradient(to right, #181575, #890505);
-     -webkit-background-clip: text;
-     color: transparent;
-     display: inline-block;
-     
+     color: var(--primary-color);
+     transition: color 0.3s ease;
  }
 
- .blog-content h3 {
-     margin: 10px 0;
-     font-size: 1.6rem;
-     color: #333;
+ .blog-card-title:hover {
+     color: var(--hover-color);
  }
 
- .blog-card-excerpt,
- .blog-content p {
-     margin: 10px 0;
-     color: #111111;
-     font-size: 1.3rem;
+ .blog-card-excerpt {
+     margin: 15px 0;
+     color: var(--text-color);
+     font-size: 1.2rem;
+     line-height: 1.6;
      display: -webkit-box;
      -webkit-line-clamp: 3;
      -webkit-box-orient: vertical;
@@ -660,103 +686,200 @@ footer {
  }
 
  .blog-card-date {
-     font-size: 0.8rem;
-     color: #888888;
+     font-size: 0.85rem;
+     color: var(--accent-color);
+     margin-top: auto;
  }
 
+ /* Blog Actions */
  .blog-actions {
      display: flex;
-     gap: 20px;
-     margin-top: 10px;
-     justify-content: flex-start;
- }
-
- .blog-actions {
-     display: flex;
-     justify-content: flex-start;
-     gap: 20px;
+     gap: 15px;
      margin-top: 10px;
  }
 
- .blog-actions .like,
- .blog-actions .comment {
+ .blog-actions button {
+     background-color: var(--primary-color);
+     color: white;
+     border: none;
+     padding: 10px 15px;
+     border-radius: 20px;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+ }
+
+ .blog-actions button:hover {
+     background-color: var(--hover-color);
+ }
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    /* Bootstrap modals have a higher z-index */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Slightly darker background */
+}
+
+.modal-dialog {
+    margin: 1.75rem auto;
+    max-width: 500px;
+}
+
+.modal-content {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 1.5rem;
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.close {
+    color: #000;
+    font-size: 1.5rem;
+    font-weight: 700;
+    opacity: 0.5;
+}
+
+.close:hover,
+.close:focus {
+    opacity: 1;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #e9ecef;
+    padding: 0.75rem 1.5rem;
+    text-align: right;
+}
+ .modal-content {
+     border-radius: 8px;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ }
+
+ .modal-header {
+     border-bottom: none;
+     background-color: #ffffff;
+     padding: 16px;
      display: flex;
      align-items: center;
-     color: #0c268e;
-     cursor: pointer;
+     border-bottom: 1px solid #e5e5e5;
  }
 
- .comment-section {
-     margin-top: 20px;
-     border-top: 1px solid #ddd;
-     padding-top: 10px;
+ .modal-title {
+     font-size: 1.5rem;
+     font-weight: 600;
+     margin: 0;
  }
 
- .comment-form {
-     margin-bottom: 10px;
+ .btn-close {
+     background: none;
+     border: none;
+     font-size: 1.25rem;
  }
 
- .comment-form textarea {
-     width: 100%;
-     padding: 5px;
-     margin-bottom: 5px;
+ .comment {
+     border-bottom: 1px solid #e0e0e0;
+     padding: 10px 0;
  }
 
- .comment-list {
-     list-style-type: none;
-     padding: 0;
+ .comment-icon {
+     font-size: 1.5rem;
+     margin-right: 10px;
  }
 
- .comment-item {
-     background-color: #f9f9f9;
+ .comment-author {
+     font-weight: bold;
+ }
+
+ .comment-text {
+     margin: 5px 0;
+ }
+
+ .comment-time {
+     font-size: 0.8rem;
+     color: #888;
+ }
+ .form-label {
+     font-weight: 500;
+ }
+
+ .btn-primary {
+     background-color: #0095f6;
+     border-color: #0095f6;
      border-radius: 5px;
-     padding: 10px;
-     margin-bottom: 5px;
+     font-weight: 500;
+     padding: 8px 16px;
+     font-size: 0.875rem;
  }
 
- .comment-like {
-     cursor: pointer;
-     color: #0c268e;
+ .btn-primary:hover {
+     background-color: #007bbd;
+     border-color: #007bbd;
  }
-
+  
  /* Responsive Design */
  @media (max-width: 768px) {
      .blog-card {
          flex-direction: column;
-         align-items: center;
      }
 
-     .blog-card img {
+     .blog-card-image {
          width: 100%;
-         height: auto;
-         border-radius: 7px;
+         height: 200px;
+         border-radius: 10px 10px 0 0;
      }
 
-     .blog-content {
-         padding: 10px;
-         text-align: center;
-     }
-
-     .blog-actions {
-         justify-content: center;
+     .blog-card-content {
+         padding: 15px;
      }
  }
 
  @media (max-width: 480px) {
-     .blog-content h3 {
-         font-size: 1.2rem;
+     .blog-card-title {
+         font-size: 1.6rem;
      }
 
-     .blog-content p {
-         font-size: 0.9rem;
+     .blog-card-excerpt {
+         font-size: 1rem;
      }
  }
-.blog-actions .like img,
-.blog-actions .comment img {
-    width: 20px;
-    height: 20px;
-    
-} 
+
+ /* Button General Styles */
+ button {
+     background-color: var(--primary-color);
+     color: white;
+     border: none;
+     padding: 8px 16px;
+     border-radius: 25px;
+     cursor: pointer;
+     margin-top: 5px;
+     transition: background-color 0.3s ease;
+ }
+
+ button:hover {
+     background-color: var(--hover-color);
+ }
 .contact-header{
 text-align: center;
 color: transparent;
