@@ -1,184 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Detail - Magazine Style</title>
+    <title>Blog Detail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <style>
-        /* Color Variables */
-        :root {
-            --primary-color: #1da1f2;
-            --secondary-color: #14171a;
-            --accent-color: #657786;
-            --bg-color: #f5f8fa;
-            --light-bg: #ffffff;
-            --border-color: #e1e8ed;
-            --hover-color: #0d95e8;
-            --text-color: #333;
-        }
-
-        /* General Body Styling */
         body {
-            font-family: 'Georgia', serif;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-        }
-
-        header {
-            background-color: var(--light-bg);
-            border-bottom: 2px solid var(--border-color);
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        /* Magazine-style Typography */
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--secondary-color);
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            line-height: 1.2;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 2rem;
-            color: var(--primary-color);
+            font-family: Arial, sans-serif;
+            background-color: #e6f3ff;
+            color: #333;
         }
 
         .content {
-            padding-top: 20px;
-            min-height: 100vh;
-            max-width: 1200px;
+            padding-top: 30px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Blog Detail Styling */
-        .blog-detail {
+        .blog-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #0066cc;
+            margin-bottom: 20px;
+        }
+
+        .blog-explanation {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-explanation h2 {
+            color: #0066cc;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .blog-explanation p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .blog-card {
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            background-color: var(--light-bg);
-            border: 1px solid var(--border-color);
-            padding: 30px;
-            margin-top: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .blog-image-container img {
+        .blog-image-container {
+            flex: 0 0 40%;
+            max-width: 40%;
+        }
+
+        .blog-image {
             width: 100%;
-            height: auto;
-            max-height: 500px;
-            border-radius: 8px;
+            height: 100%;
             object-fit: cover;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .blog-meta {
-            color: var(--accent-color);
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
         }
 
         .blog-content {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            text-align: justify;
-            margin-bottom: 30px;
+            flex: 0 0 60%;
+            max-width: 60%;
+            padding: 30px;
         }
 
-        /* Footer */
-        footer {
-            background-color: var(--secondary-color);
-            color: #fff;
-            padding: 2rem 0;
+        .blog-content h2 {
+            color: #0066cc;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
         }
 
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-        }
-
-        .footer-content h3 {
-            font-size: 1.2rem;
-        }
-
-        .footer-content a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .footer-content a:hover {
-            text-decoration: underline;
-        }
-
-        /* Buttons */
-        .btn {
-            border-radius: 50px;
-            padding: 10px 30px;
-            font-size: 1.1rem;
-            text-transform: uppercase;
+        .blog-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 20px;
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
-            border: none;
+            background-color: #0066cc;
+            border-color: #0066cc;
         }
 
         .btn-primary:hover {
-            background-color: var(--hover-color);
+            background-color: #0056b3;
+            border-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
-
-    <header>
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="index.html">MyBlog</a>
-        </nav>
-    </header>
-
     <main class="content">
-        <div class="blog-detail">
-            <h1 id="blogTitle"></h1>
+        <h1 class="blog-title">BLOG</h1>
+        
+        <div class="blog-explanation">
+            <h2>Welcome to Our Blog!</h2>
+            <p>We're thrilled to have you here. Our blog is a space where we share insights, stories, and updates on a variety of topics that we're passionate about. 
+            Whether you're here to gain knowledge, find inspiration, or just browse through interesting reads, we hope you find something that resonates with you. Feel free to explore, engage, 
+            and connect with us through your comments and feedback. Thank you for visiting, and we hope you enjoy the journey with us!
+            </p>
+        </div>
+
+        <div class="blog-card">
             <div class="blog-image-container">
-                <img id="blogImage" src="" alt="Blog Image">
+                <img id="blogImage" src="/api/placeholder/800/400" alt="Blog image" class="blog-image">
             </div>
-            <p id="blogDate" class="blog-meta"></p>
-            <div id="blogContent" class="blog-content"></div>
-            <a href="index.html" class="btn btn-primary">Back to Blogs</a>
+            <div class="blog-content">
+                <h2 id="blogTitle"></h2>
+                <p id="blogDate" class="blog-meta"></p>
+                <div id="blogContent"></div>
+                <a href="index.html" class="btn btn-primary mt-4">Back to Blogs</a>
+            </div>
         </div>
     </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="email">
-                <h3>
-                    <img src="icons/icons8-email-80.png" alt="Email Icon" style="vertical-align: middle; margin-right: 10px;">
-                    shemaroger43@gmail.com
-                </h3>
-            </div>
-            <div class="links">
-                <a href="index.html">Blogs</a> |
-                <a href="index.html">Contact</a>
-            </div>
-        </div>
-    </footer>
 
     <script>
         function getUrlParameter(name) {
@@ -213,4 +153,5 @@
         }
     </script>
 </body>
+
 </html>

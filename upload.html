@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Blog Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Image for Blog Post</h1>
+        <form id="uploadImageForm" enctype="multipart/form-data">
+            <input type="hidden" id="blogId" name="blogId" value="your-blog-id">
+            <div class="form-group">
+                <label for="image">Select Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn">Upload Image</button>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const blogId = document.getElementById('blogId').value;
+
+            document.getElementById('uploadImageForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData();
+                formData.append('image', document.getElementById('image').files[0]);
+
+                try {
+                    const response = await fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/image`, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    });
+
+                    const contentType = response.headers.get('content-type');
+                    let result;
+                    if (contentType && contentType.includes('application/json')) {
+                        result = await response.json();
+                    } else {
+                        const text = await response.text();
+                        result = { error: `Unexpected response: ${text}` };
+                    }
+
+                    if (response.ok) {
+                        document.getElementById('message').innerText = `Image uploaded successfully: ${result.image}`;
+                        document.getElementById('message').classList.add('success');
+                        document.getElementById('message').classList.remove('error');
+                    } else {
+                        document.getElementById('message').innerText = `Error: ${result.error || 'Unknown error occurred'}`;
+                        document.getElementById('message').classList.add('error');
+                        document.getElementById('message').classList.remove('success');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    document.getElementById('message').innerText = `An unexpected error occurred: ${error.message}`;
+                    document.getElementById('message').classList.add('error');
+                    document.getElementById('message').classList.remove('success');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

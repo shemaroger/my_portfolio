@@ -6,7 +6,6 @@
     <title>Advanced Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -40,9 +39,21 @@
             margin-bottom: 20px;
         }
         .card-header {
-            background-color: #fff;
+            background-color: #f1f1f1; /* Light grey background for card headers */
             border-bottom: 1px solid #e3e6f0;
             font-weight: bold;
+        }
+        .card-body {
+            background-color: #ffffff; /* White background for card body */
+        }
+        .card-total-blogs .card-body {
+            background-color: #d4edda; /* Light green background for Total Blogs */
+        }
+        .card-total-comments .card-body {
+            background-color: #cce5ff; /* Light blue background for Total Comments */
+        }
+        .card-total-likes .card-body {
+            background-color: #f8d7da; /* Light red background for Total Likes */
         }
         .table img {
             max-width: 50px;
@@ -63,20 +74,16 @@
                                 <i class="fas fa-tachometer-alt me-2"></i> Dashboard
                             </a>
                         </li>
-                        
                         <li class="nav-item">
                             <a class="nav-link" href="blogList.html">
                                 <i class="fas fa-blog me-2"></i> Blogs
                             </a>
                         </li>
-                        
+                        <li class="nav-item mt-3">
+                            <a id="logoutButton" href="#" class="nav-link text-secondary">
+                                <i class="fa fa-sign-out-alt"></i> Logout
+                            </a>
                         </li>
-                      <li class="nav-item mt-3">
-    <a id="logoutButton" href="#" class="nav-link text-secondary">
-        <i class="fa fa-sign-out-alt"></i> Logout
-    </a>
-</li>
-
                     </ul>
                 </div>
             </nav>
@@ -86,54 +93,46 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Dashboard</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                         <div class="btn-group me-2">
+                        <div class="btn-group me-2">
                             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div> 
+                        </div>
                     </div>
                 </div>
 
                 <!-- Dashboard Overview -->
                 <div class="row">
                     <div class="col-md-3 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Projects</h5>
-                                <h2 class="card-text">6</h2>
-                                <p class="card-text text-success"><i class="fas fa-arrow-up"></i> 12% increase</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-4">
-                        <div class="card">
+                        <div class="card card-total-blogs">
                             <div class="card-body">
                                 <h5 class="card-title">Total Blogs</h5>
-                                <h2 class="card-text">15</h2>
-                                <p class="card-text text-danger"><i class="fas fa-arrow-down"></i> 5% decrease</p>
+                                <h2 id="totalBlogs" class="card-text">Loading...</h2>
+                                <p class="card-text text-success"><i class="fas fa-arrow-up"></i> Updating...</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-4">
-                        <div class="card">
+                        <div class="card card-total-comments">
                             <div class="card-body">
                                 <h5 class="card-title">Total Comments</h5>
-                                <h2 class="card-text">128</h2>
-                                <p class="card-text text-success"><i class="fas fa-arrow-up"></i> 8% increase</p>
+                                <h2 id="totalComments" class="card-text">Loading...</h2>
+                                <p class="card-text text-success"><i class="fas fa-arrow-up"></i> Updating...</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-4">
-                        <div class="card">
+                        <div class="card card-total-likes">
                             <div class="card-body">
                                 <h5 class="card-title">Total Likes</h5>
-                                <h2 class="card-text">1,024</h2>
-                                <p class="card-text text-success"><i class="fas fa-arrow-up"></i> 15% increase</p>
+                                <h2 id="totalLikes" class="card-text">Loading...</h2>
+                                <p class="card-text text-success"><i class="fas fa-arrow-up"></i> Updating...</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Charts -->
+                <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="card">
                             <div class="card-header">
@@ -145,42 +144,70 @@
                         </div>
                     </div>
                 </div>
+            </main>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-      <script>
-    document.getElementById('logoutButton').addEventListener('click', () => {
-      localStorage.removeItem('token');  // Remove the token from localStorage
-      window.location.href = 'login.html';  // Redirect to the login page
-    });
-  </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-     
-        // Blog Engagement Chart
-        const blogEngagementCtx = document.getElementById('blogEngagementChart').getContext('2d');
-        new Chart(blogEngagementCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Likes',
-                    data: [120, 190, 300, 250, 400, 380],
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    tension: 0.1
-                }, {
-                    label: 'Comments',
-                    data: [50, 80, 120, 100, 150, 140],
-                    borderColor: 'rgba(0, 123, 255, 1)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('token');  // Remove the token from localStorage
+            window.location.href = 'login.html';  // Redirect to the login page
         });
+
+        // Function to fetch dashboard data from API
+        async function fetchDashboardData() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('https://my-blogs-hfeb.onrender.com/api/dashboard', { // Updated endpoint
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+
+                // Update the dashboard with fetched data
+                document.getElementById('totalBlogs').textContent = data.totalBlogs;
+                document.getElementById('totalComments').textContent = data.totalComments;
+                document.getElementById('totalLikes').textContent = data.totalLikes;
+
+                // Update the chart with fetched data
+                const blogEngagementCtx = document.getElementById('blogEngagementChart').getContext('2d');
+                new Chart(blogEngagementCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.engagementData.labels,
+                        datasets: [
+                            {
+                                label: 'Likes',
+                                data: data.engagementData.likes,
+                                borderColor: 'rgba(40, 167, 69, 1)',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Comments',
+                                data: data.engagementData.comments,
+                                borderColor: 'rgba(0, 123, 255, 1)',
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        }
+
+        fetchDashboardData();
     </script>
 </body>
 </html>
