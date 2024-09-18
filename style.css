@@ -119,92 +119,7 @@ nav ul li a:hover {
 main {
     padding: 45px;
 }
-/* .home{
-  margin-top: 190px;
-}
-.card {
-    background: linear-gradient(to right, #f7c4c4, #d70f0f);
-    background-size: cover;
-    background-repeat: no-repeat;
-    border: 1px solid #ddd;
-    margin-right: 190px;
-    padding-bottom: 0px;
-    padding-left: 180px;
-    padding-right: 250px;
-    margin-top: -400px;
-    margin-left: 900px;
-    box-shadow: 0 4px 8px rgba(230, 182, 182, 0.1);
-    text-align: center;
-    flex: 1;
-    max-width: 300px;
-    position: absolute;
-}
 
-.soft {
-    margin-bottom: 300px;
-    margin-left: 200px;
-    color: #000000;
-    font-size: 30px;
-}
-
-.container-text {
-    margin-right: 800px;
-    margin-left: 200px;
-    margin-top: -200px;
-    font-size: 2rem;
-}
-
-.l-text {
-    background: linear-gradient(to right, #181575, #d70f0f);
-    -webkit-background-clip: text;
-    color: transparent;
-    display: inline-block;
-}
-
-.f-text {
-    color: #1e19a3;
-}
-
-
-.join-text a {
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-
-.join-text a:hover {
-    color: #007BFF;
-}
-
-.join-text button {
-    background-color: #0c268e;
-    border: none;
-    color: rgb(255, 255, 255);
-    padding: 15px 30px;
-    
-    font-size: 16px;
-    cursor: pointer;
-    font-family: Arial, Helvetica, sans-serif;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-    display: block;
-   
-    width: max-content;
-  
-    margin-left: 200px;
-   
-}
-
-
-.join-text button:hover {
-    background-color: #4a1c07;
-}
-.image {
-    margin-top: -110px;
-    margin-right: 300px;
-} */
 /* General styling */
 .home {
     background-color: #f8f9fa;
@@ -296,142 +211,86 @@ section {
     font-size: 25px;
 }
 
-/* General styles for the portfolio section */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --background-color: #f4f7f9;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+}
+
 #portfolio {
-    padding: 20px;
-    text-align: center;
-    background-color: #f4f4f4;
-    /* Light background for better contrast */
+    padding: 80px 0;
 }
 
-/* Flexbox grid styles for the portfolio section */
-.portfolio-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+.section-title {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 50px;
+    position: relative;
 }
 
-/* Flexbox row styles */
-.portfolio-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    gap: 20px;
+.section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 10px auto 0;
 }
 
-/* Individual card styles */
 .portfolio-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    height: 450px;
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
-    overflow: hidden;
-    color: #ffffff;
-    /* Text color for better readability */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 .portfolio-card:hover {
     transform: translateY(-10px);
-    /* Slight lift on hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.portfolio-card img {
-    width: 100%;
-    height: 250px;
+.card-img-top {
+    height: 200px;
     object-fit: cover;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    margin-bottom: 10px;
+    transition: transform 0.3s ease;
 }
 
-.portfolio-card h4 {
-    margin: 10px 0;
-    color: #ffffff;
-    /* Darker heading color */
+.portfolio-card:hover .card-img-top {
+    transform: scale(1.1);
 }
 
-.portfolio-card p {
-    color: #ffffff;
-    /* Grey text for better readability */
-    padding: 0 20px;
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--secondary-color);
 }
 
-.portfolio-card button {
-    background-color: #6f3403;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    margin-top: 10px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+.card-text {
+    font-size: 0.9rem;
+    color: #666;
 }
 
-.portfolio-card a {
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease;
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.portfolio-card button:hover {
-    background-color: #074a0d;
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
 }
 
-/* Background color classes for different cards */
-.voting-bg {
-    background-color: #0c0663;
-}
-
-.market-bg {
-    background: linear-gradient(to right, #5a0464, #060553, #8d0d8d);
-    margin-top: 80px;
-}
-
-.harvest-bg {
-    background-color: #0c0663;
-}
-
-.event-bg {
-    background-color: #0c0663;
-}
-
-.guard-bg {
-    background: linear-gradient(to right, #5a0464, #060553, #8d0d8d);
-    margin-top: 120px;
-}
-
-.ecommerce-bg {
-    background-color: #0c0663;
-}
-
-.music-bg {
-    background-color: #0c0663;
-    margin-top: 80px;
-}
-
-.rental-bg {
-    background: linear-gradient(to right, #5a0464, #060553, #8d0d8d);
-    margin-top: 120px;
-}
-
-.healthcare-bg {
-    background-color: #0c0663;
-}
-
-/* Responsive styles */
 @media (max-width: 768px) {
-    .portfolio-card {
-        width: 90%;
-        height: auto;
+    .section-title {
+        font-size: 2rem;
     }
 }
 
@@ -1019,10 +878,7 @@ button[type="submit"]:hover {
         height: auto;
     }
 
-   
-    /* footer {
-        position: relative;
-    } */
+
 }
 
 @media (max-width: 480px) {
@@ -1052,4 +908,67 @@ button[type="submit"]:hover {
     .portfolio-card img {
         height: auto;
     }
+}
+
+body.auth-page {
+    background-color: #3e3c3c;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.auth-page .card {
+    border: none;
+    border-radius: 10px;
+}
+
+.auth-page .card-body {
+    padding: 2.5rem;
+}
+
+.auth-page h2 {
+    color: #1877f2;
+    font-weight: 600;
+}
+
+.auth-page .form-label {
+    font-weight: 500;
+}
+
+.auth-page .input-group-text {
+    background-color: #f0f2f5;
+    border: none;
+    border-right: 1px solid #ced4da;
+}
+
+.auth-page .form-control {
+    border-left: none;
+}
+
+.auth-page .btn-primary {
+    background-color: #1877f2;
+    border-color: #1877f2;
+    font-weight: 600;
+    padding: 0.6rem 1rem;
+}
+
+.auth-page .btn-primary:hover,
+.auth-page .btn-primary:focus {
+    background-color: #166fe5;
+    border-color: #166fe5;
+}
+
+.auth-page a {
+    color: #1877f2;
+    font-weight: 500;
+}
+
+.auth-page a:hover {
+    text-decoration: underline !important;
+}
+
+#loadingSpinner {
+    display: none;
+}
+
+.error {
+    color: #dc3545;
 }
