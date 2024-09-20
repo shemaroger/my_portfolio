@@ -335,24 +335,29 @@
             }
 
             function displayComments(comments) {
-                const commentsContainer = document.getElementById('commentsContainer');
-                commentsContainer.innerHTML = '';
-                comments.forEach(comment => {
-                    const commentDiv = document.createElement('div');
-                    commentDiv.className = 'comment';
-                    commentDiv.innerHTML = `
-                        <div class="d-flex align-items-start">
-                            <i class="bi bi-person comment-icon"></i>
-                            <div class="comment-body ms-2">
-                                <div class="comment-author">${comment.author?.email || 'Anonymous'}</div>
-                                <div class="comment-text">${comment.content}</div>
-                                <div class="comment-time">${new Date(comment.timestamp).toLocaleString()}</div>
-                            </div>
-                        </div>
-                    `;
-                    commentsContainer.appendChild(commentDiv);
-                });
-            }
+    const commentsContainer = document.getElementById('commentsContainer');
+    commentsContainer.innerHTML = '';
+    comments.forEach(comment => {
+        console.log(comment.timestamp); // Debugging line
+        const date = new Date(comment.timestamp);
+        const formattedDate = isNaN(date) ? 'Invalid date' : date.toLocaleString();
+        
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment';
+        commentDiv.innerHTML = `
+            <div class="d-flex align-items-start">
+                <i class="bi bi-person comment-icon"></i>
+                <div class="comment-body ms-2">
+                    <div class="comment-author">${comment.author?.email || 'Anonymous'}</div>
+                    <div class="comment-text">${comment.content}</div>
+                    
+                </div>
+            </div>
+        `;
+        commentsContainer.appendChild(commentDiv);
+    });
+}
+
 
             // Add comment for logged-in users only
             async function addComment(blogId, commentContent) {
