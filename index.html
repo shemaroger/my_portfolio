@@ -267,9 +267,10 @@
                         <div class="blog-content">
                             <h2 class="blog-card-title">${blog.title}</h2>
                             <p class="blog-card-excerpt">${blog.content.substring(0, 150)}...<br /><br /></p>
-                            <a href="blog-detail.html?id=${blog._id}" class="btn btn-secondary">Read More</a></p>
+                            
                             <h3 class="blog-card-date">${new Date(blog.date).toLocaleDateString()}</h3>
                             ${renderLikeAndCommentButtons(blog)}
+                            <a href="blog-detail.html?id=${blog._id}" class="btn btn-secondary">Read More</a></p>
                         </div>
                     `;
                     blogContainer.appendChild(card);
