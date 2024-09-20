@@ -458,7 +458,7 @@ function uploadImage() {
     fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/image`, {
         method: 'POST',
         headers: {
-            'Authorization': `${token}` // Add the token to the headers
+            'Authorization': `${token}` 
         },
         body: formData
     })
