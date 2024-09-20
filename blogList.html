@@ -199,7 +199,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="uploadImageForm">
+                                <form id="uploadImageForm" enctype="multipart/form-data">
                                     <input type="hidden" id="uploadBlogId">
                                     <div class="mb-3">
                                         <label for="image" class="form-label">Select Image</label>
@@ -248,10 +248,11 @@
             });
 
             // Handle image upload submission
-            document.getElementById('uploadImageForm').addEventListener('submit', function (e) {
-                e.preventDefault();
-                uploadImage(token);
-            });
+           document.getElementById('uploadImageForm').addEventListener('submit', function (e) {
+             e.preventDefault();
+           uploadImage(token); // No need to pass the token anymore
+             });
+
         });
 
         function showAlert(message, type = 'success') {
@@ -421,52 +422,70 @@
             }
         }
 
-
-function uploadImage(token) {
-    const formData = new FormData();
+function uploadImage() {
     const fileInput = document.getElementById('image');
     const blogId = document.getElementById('uploadBlogId').value;
+
+    if (!blogId) {
+        showAlert('No Blog ID found.', 'warning');
+        return;
+    }
 
     if (!fileInput.files[0]) {
         showAlert('Please select an image file.', 'warning');
         return;
     }
 
-    formData.append('image', fileInput.files[0]);
+    const file = fileInput.files[0];
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    if (!allowedTypes.includes(file.type)) {
+        showAlert('Invalid file type. Only JPEG, JPG, and PNG are allowed.', 'warning');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        showAlert('No authorization token found. Please log in.', 'danger');
+        return;
+    }
+
+    const uploadButton = document.getElementById('uploadButton');
+    if (uploadButton) uploadButton.disabled = true;
 
     fetch(`https://my-blogs-hfeb.onrender.com/api/blogs/${blogId}/image`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `${token}` // Add the token to the headers
         },
         body: formData
     })
     .then(response => {
         if (!response.ok) {
             return response.text().then(text => {
-                console.error('Server response error:', text);
-                throw new Error(text || 'Failed to upload image.');
+                console.error('Server response:', text);
+                throw new Error(text || `HTTP error! status: ${response.status}`);
             });
         }
         return response.json();
     })
     .then(data => {
-        showAlert('Image uploaded successfully');
-        fetchBlogs(token); // Refresh the blog list to show the updated image
+        showAlert('Image uploaded successfully!', 'success');
+        fileInput.value = '';
+        fetchBlogs(token);
         const modal = bootstrap.Modal.getInstance(document.getElementById('uploadImageModal'));
-        if (modal) {
-            modal.hide(); // Close the modal using Bootstrap's method
-        } else {
-            console.warn('Modal instance not found');
-        }
+        if (modal) modal.hide();
     })
     .catch(error => {
         console.error('Error uploading image:', error);
         showAlert(`Failed to upload image. Error: ${error.message}`, 'danger');
+    })
+    .finally(() => {
+        if (uploadButton) uploadButton.disabled = false;
     });
 }
-
-
 function handleUploadImage(e) {
     const row = e.target.closest('tr');
     if (!row) return; // Ensure `row` is found
